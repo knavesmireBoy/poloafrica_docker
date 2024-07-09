@@ -26,3 +26,4 @@ RUN echo "upload_max_filesize=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.
 #client_max_body_size 200M;
 RUN echo "client_max_body_size=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
 RUN echo "memory_limit=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
+EXPOSE 80
