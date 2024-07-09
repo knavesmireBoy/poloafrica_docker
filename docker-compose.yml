@@ -1,0 +1,41 @@
+# Services
+version: '3.8'
+
+services:
+  # Nginx Service
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./websites:/websites
+      - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - php
+    # PHP FPM Service
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./websites:/websites
+      - ./php-logging.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+    depends_on:
+      - mydb
+    environment:
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE  
+  mydb:
+    container_name: mydb
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+    volumes:
+      - mysqldata:/var/lib/mysql  
+# Volumes
+volumes:
+  mysqldata: {}

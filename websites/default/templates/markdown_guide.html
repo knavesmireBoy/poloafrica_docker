@@ -1,0 +1,28 @@
+<ul id="guide">
+		<li>
+			<a href="https://www.markdownguide.org/getting-started/" target="_blank"><strong>The Markdown Guide</strong> by Matt Cone</a>
+		</li>
+		<li>The toolbar above provides some handy shortcuts for creating markdown markup. For a comprehensive guide click the link above.</li>
+		<li>For inline formatting: For a single word selection just place the cursor within the wo<mark>r</mark>d and click to apply the required formatting, otherwise start and end your selection anywhere within the fi<mark>rst and last wo</mark>rds.</li>
+		<li>The <strong>H</strong> button will with each click add a hash to the start of the line, returning to one hash at the seventh succesive click, The result would be a heading from <strong>h1</strong> thru <strong>h6</strong>.</li>
+		<li>The <strong>B</strong> button will toogle a double pair of asterisks on the selected text. For a single word simply place the cursor anywhwere in the word and click. The result would be to <strong>embolden</strong> the text. To use an actual asterisk use the HTML entity "&amp;ast;" eg **my footnote&amp;ast;**, for bold asterisk, or **my footnote**&amp;ast; for normal.</li>
+		<li>The <em><strong>I</strong></em> button will toogle a single pair of asterisks on the selected text. For a single word see above. The result would be to <em>italicise</em> the text. Already <strong>emboldened</strong> text will be respected. Therefore <strong>my bold text</strong> would become <em><strong>my bold text</strong></em>.</li>
+		<li>The <strong>¶</strong> inserts a blank line. Place cursor in a sentence ending in a full stop (period) and click. A new paragraph is created. Alternatively simply type a return at the end of the sentence.</li>
+		<li>The <strong>•</strong> adds an html break tag. Place cursor in a sentence ending in a full stop (period) and click.
+    </li>
+    	<li>The <strong>&lt;/&gt;</strong> sets/unsets any <a href="https://w3context.com/html/basic/html-inline-elements.jsp" target="_blank">legitimate inline html tag</a> (excluding those tags already catered for and also self-closing tags). It invokes a prompt button to allow you to type in the tag name, defaulting to span. It otherwise behaves as the bold/italic button. Make a selection to surround multiple words, or place cursor in target word for a single word. To remove the inline tag straddle the range of words and click. The same thing can obviously be achieved manually and in most cases you may wish to furnish the tag with a relevant attribute. Directly using HTML in Markdown applications however does not have 100% support, again <a href="https://www.markdownguide.org/getting-started/" target="_blank">see the guide </a> for details. Useful lessons can also be found <a href="https://commonmark.org/help/tutorial/" target="_blank">here</a>.
+    </li>
+		<li>The <strong>link</strong> button creates a link on the <strong>selected</strong> text. A confirm dialog window opens. Enter a genuine link to either an external website ("https://www.bbc.co.uk/") or an internal web page ("/enquiries/"), or to a resource (/resource/assets/medley/polotimes.pdf). To add a title to the link add <strong>one</strong> space after the hyperlink followed by the title content. By default all links will open in a separate browser window.</li>
+		<li>The <strong>unlink</strong> button clears the link. Click anywhere in the <strong>FIRST</strong> word <strong>[Po<mark>l</mark>oafrica Development Trust][2]</strong>" to clear.</li>
+		<li>The <strong>list</strong> button converts a <strong>selection</strong> of lines into an unordered list: 
+			<ol>
+				<li>• a</li>
+				<li>• b</li>
+				<li>• c</li>
+			</ol>
+            Subsequent clicks will cycle between no list (paragraphs) and a list. With a list alternating between an ordered list and an unordered list.
+		</li>
+		<li>The <strong>image</strong> button adds an image. This would normally never be required as images should be independent of the article text and can be managed by clicking the icons below the submit button. However it may be useful for the occasional inline icon. All images must have an <strong><a href="https://en.wikipedia.org/wiki/Alt_attribute#:~:text=The%20alt%20attribute%20is%20the,is%20applied%20cannot%20be%20rendered." target="_blank">alt</a></strong> attribute even if it is an empty string. Type in any alterate text, click anywhere in the line, a dialog box will open. Enter the path to the image and an optional title. See link above. Images will be placed INLINE at the chosen location, unless it is desirable to have the image in its own paragraph, in which case follow the image with a hard return.</li>
+		<li>The <strong>arrow</strong> button CLEARS all edits.</li>
+		<li id="help">The <strong>?</strong> button toggles this guide. As will clicking on this line.</li>
+	</ul>
