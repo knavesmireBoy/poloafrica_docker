@@ -31,4 +31,4 @@ RUN echo "memory_limit=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
 
 EXPOSE 80
 #CMD ["nginx", "-addr=0.0.0.0:80"]
-#CMD ["nginx", "httpd", "-f", "-v", "-p", "80"]
+CMD ["nginx", "httpd", "-f", "-v", "-p", "80"]
