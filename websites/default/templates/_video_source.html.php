@@ -1,9 +1,9 @@
 <?php
-$src =  '';
-$type = '';
+$vsrc =  '';
+$vtype = '';
 foreach ($videodata as $video) {
-    $src = $video['src'];
-    $type = $video['type'];
+    $vsrc = $video['vsrc'];
+    $vtype = $video['vtype'];
 ?>
-    <source src="/<?= $src ?>" type=<?= $type; ?>>
+    <source src="/<?= $vsrc ?>" type=<?= $vtype; ?>>
 <?php }

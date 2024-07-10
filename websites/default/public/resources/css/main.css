@@ -1373,6 +1373,9 @@ a > svg {
   .multi > img:nth-of-type(n + 2) {
     clear: both; }
 
+  .multi > video:nth-of-type(n + 2) {
+    clear: both; }
+
   h2:nth-of-type(1) {
     margin: 0;
     line-height: 2.2;

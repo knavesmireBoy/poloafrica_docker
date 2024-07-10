@@ -43,7 +43,6 @@ class Asset
     }
   }
 
-
   public function validate($articleId, $assetId, $regX, $flag = false)
   {
     $res = $this->getArticleDirect($articleId, 'page');
@@ -77,5 +76,47 @@ class Asset
   public function dumpy()
   {
     dump('dumpy');
+  }
+
+  public function foobar()
+  {
+    return $this->path;
+    return $this->fetch('table', 'id', $this->id);
+  }
+
+  public function preparePoster($ext = 'jpg')
+  {
+    $video = validate_extension(trim($this->path), VIDEO_EXT);
+    if ($video) {
+      $subpath = substr($this->path, 0, -3);
+      $path = IMAGES . $subpath . $ext;
+      return file_exists($path) ? $path : DEV . 'steamboat_willie.jpg';
+    }
+    return '';
+  }
+
+  public function prepareVideo()
+  {
+    $video = validate_extension(trim($this->path), VIDEO_EXT);
+    $pp = $this->getArticle($this->id, 'page');
+    if ($video) {
+      $subpath = substr($this->path, 0, -4);
+      $i = 0;
+      $grp = [];
+      $pp = $pp ? $pp : 'medley';
+      $pp = preg_replace('|\/|', '', $pp);
+      //'video/webm; codecs="av01.2.19H.12.0.000.09.16.09.1, flac"'
+      while (isset(VIDEO_CODECS[$i])) {
+        if ($pp) {
+          $path = VIDEO_PATH . $pp . "/$subpath" . VIDEO_EXT[$i];
+        }
+        if (isset($path) && file_exists($path)) {
+          $grp[] = ['vsrc' => $path, 'vtype' => VIDEO_CODECS[$i]];
+        }
+        $i++;
+      }
+      return $grp;
+    }
+    return [];
   }
 }

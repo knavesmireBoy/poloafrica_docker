@@ -1,7 +1,7 @@
 <?php
 $article = $articles[0];
 $type = 'multiple';
-//classify expects a SINGLE $article the leading one contains the necessary info
+//classify.html.php expects a SINGLE $article the leading one contains the necessary info
 //BUT since the article order may change all articles should have the same id/class combo 
 include '_classify.html.php';
 $attrs = trim($section_attrs);
