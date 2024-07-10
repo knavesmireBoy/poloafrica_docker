@@ -15,8 +15,7 @@ RUN apk add --no-cache --virtual build-essentials \
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
-
+#RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
 #RUN sed -i "s/post_max_size =.*/post_max_size = 200M/g" /etc/php5/fpm/php.ini
 #RUN sed -i "s/upload_max_filesize =.*/upload_max_filesize = 200M/g" /etc/php5/fpm/php.ini

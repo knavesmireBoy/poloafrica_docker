@@ -29,8 +29,6 @@ services:
   mydb:
     container_name: mydb
     image: mariadb:latest
-    ports:
-      - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD
       - MYSQL_USER
