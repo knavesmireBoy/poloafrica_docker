@@ -1,10 +1,8 @@
 # Services
-version: '3.8'
-
+version: "3.8"
 services:
   # Nginx Service
   nginx:
-    container_name: polonginx
     image: nginx:latest
     ports:
       - "80:80"
@@ -13,11 +11,7 @@ services:
       - ./nginx-conf:/etc/nginx/conf.d
     depends_on:
       - php
-    # PHP FPM Service
   php:
-    container_name: polophp
-    ports:
-      - "9000:9000"
     build:
       context: .
       dockerfile: Dockerfile
@@ -29,7 +23,7 @@ services:
     environment:
       - MYSQL_USER
       - MYSQL_PASSWORD
-      - MYSQL_DATABASE  
+      - MYSQL_DATABASE
   mydb:
     container_name: mydb
     image: mariadb:latest
@@ -39,7 +33,7 @@ services:
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
     volumes:
-      - mysqldata:/var/lib/mysql  
+      - mysqldata:/var/lib/mysql
 # Volumes
 volumes:
   mysqldata: {}
