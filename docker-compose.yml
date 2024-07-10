@@ -4,7 +4,8 @@ version: '3.8'
 services:
   # Nginx Service
   nginx:
-    poloweb: nginx:latest
+    container_name: polonginx
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
@@ -14,6 +15,7 @@ services:
       - php
     # PHP FPM Service
   php:
+    container_name: polophp
     build:
       context: .
       dockerfile: Dockerfile
