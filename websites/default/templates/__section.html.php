@@ -2,10 +2,10 @@
 
 $incfile = '';
 $mykey = '';
-
-if (isset($article->assets[0])) {
+$myasset = $article->assets[0] ?? null;
+if (isset($myasset)) {
     //ASSUMES SAME FILETYPE PER ARTICLE??
-    $incfile = validate_extension(trim($article->assets[0]->path), VIDEO_EXT) ? 'video' : 'image';
+    $incfile = validate_extension(trim($myasset->path), VIDEO_EXT) ? 'video' : 'image';
 }
 if ($incfile === 'video') {
     include '_videos.html.php';
