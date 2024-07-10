@@ -178,7 +178,7 @@ class Pages extends Composite
             }
         } //posted
         //NOTE variables created on-the-fly for $email(line 327) and $comments
-        $this->buildArticles('enquiries5');
+        $this->buildArticles('enquiries');
         return [
             'template' => 'page.html.php',
             'title' => ucfirst('enquiries'),
@@ -201,7 +201,7 @@ class Pages extends Composite
                 'addr4' => $data['addr4'] ?? '',
                 'email' => $email ?? 'andrewsykes@btinternet.com',
                 'comments' => $comments ?? '',
-                'composite' => $this->myItems
+                'articles' => $this->items
             ]
         ];
     }
@@ -312,22 +312,22 @@ class Pages extends Composite
         $articles = $this->fetchArticles();
         $comp = null;
 
-        $articles = array_map(function ($a) {
-            $a->mdcontent = MarkdownExtra::defaultTransform($a->content);
-            return $a;
+        $articles = array_map(function ($article) {
+            $article->mdcontent = MarkdownExtra::defaultTransform($article->content);
+            return $article;
         }, $articles);
 
-        foreach ($articles as $a) {
-            $a->assets = $a->getAssets($a->id);
-            if (preg_match('/section/', $a->attr_id)) {
+        foreach ($articles as $leaf) {
+            $leaf->assets = $leaf->getAssets($leaf->id);
+            if (preg_match('/section/', $leaf->attr_id)) {
                 $comp = $comp ? $comp : new Composite();
-                $comp->addItem($a);
+                $comp->addItem($leaf);
             } else {
                 if (!empty($comp)) {
                     $this->addItem($comp);
                     $comp = null;
                 }
-                $this->addItem($a);
+                $this->addItem($leaf);
             }
         }
     }
@@ -342,7 +342,7 @@ class Pages extends Composite
             'template' => 'page.html.php',
             'title' => ucfirst($this->pp),
             'variables' => [
-                'composite' => $this->myItems,
+                'articles' => $this->items,
                 'klas' => ''
             ]
         ];

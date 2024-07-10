@@ -9,20 +9,20 @@ include_once FUNCTIONS;
 
 class Composite implements Component
 {
-    protected $myItems = [];
+    protected $items = [];
 
     public function __construct()
     {
     }
 
-    public function addItem(Component $com)
+    public function addItem(Component $comp)
     {
-        if (!in_array($com, $this->myItems)) {
-            array_push($this->myItems, $com);
+        if (!in_array($comp, $this->items)) {
+            array_push($this->items, $comp);
         }
     }
 
-    public function removeItem(Component $com)
+    public function removeItem(Component $comp)
     {
         //Reserved for code to remove component
     }
@@ -30,8 +30,8 @@ class Composite implements Component
     public function getItem($i = 0)
     {
         if (!empty($i)) {
-            return $this->myItems[$i];
+            return $this->items[$i];
         }
-        return $this->myItems;
+        return $this->items;
     }
 }
