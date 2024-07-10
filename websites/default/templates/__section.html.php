@@ -5,7 +5,7 @@ $mykey = '';
 $flush = false;
 $myasset = $article->assets[0] ?? null;
 $myhead = preg_match('/^<h\d>.+/', $article->summary);
-include '_accordion.html.php';
+include '_accordion.html.php';//top of section
 
 if (isset($article->assets[0])) {//if article has assets;
   foreach ($article->assets as $k => $myasset) {
@@ -14,7 +14,8 @@ if (isset($article->assets[0])) {//if article has assets;
     include '_article.html.php';
   }
 } else {
-  if (preg_match('/\w+\.html\.php$/', $article->content)) {//non database derived article
+  //non database derived article
+  if (preg_match('/\w+\.html\.php$/', $article->content)) {
     include $article->content;
   } else {
     include '_mdarticle.html.php';
