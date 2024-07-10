@@ -1,6 +1,9 @@
 
 <?php
-include '_accordion.html.php';
+if(!$ran){
+    include '_accordion.html.php';
+}
+
 //$article->summary contains RAW html
 $myhead = preg_match('/^<h\d>.+/', $article->summary);
 /*!!
@@ -15,8 +18,9 @@ Given this is a one-off we resort to a bit of a kludge
 */
 
 foreach ($article->assets as $k => $a) {
-    if ($myhead) {
-        echo $article->summary;
-    }
+   
+}
+if ($myhead) {
+    echo $article->summary;
 }
 include '_video_article.html.php';
