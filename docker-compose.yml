@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   # Nginx Service
-  nginx:
+  poloweb:
     image: nginx:latest
     ports:
       - "80:80"
