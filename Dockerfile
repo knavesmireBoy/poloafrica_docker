@@ -27,6 +27,6 @@ RUN echo "upload_max_filesize=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.
 RUN echo "client_max_body_size=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
 RUN echo "memory_limit=200M" >> /usr/local/etc/php/conf.d/php-uploadsize.ini
 
-EXPOSE 80/tcp
-EXPOSE 80/udp
-CMD ["nginx", "-addr=0.0.0.0:80"]
+EXPOSE 80
+#CMD ["nginx", "-addr=0.0.0.0:80"]
+CMD ["nginx", "httpd", "-f", "-v", "-p", "80"]
