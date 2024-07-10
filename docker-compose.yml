@@ -11,7 +11,7 @@ services:
       - ./websites:/websites
       - ./nginx-conf:/etc/nginx/conf.d
     depends_on:
-      - php
+      - myphp
   php:
     container_name: myphp
     build:
