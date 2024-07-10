@@ -16,6 +16,8 @@ services:
     # PHP FPM Service
   php:
     container_name: polophp
+    ports:
+      - "9000:9000"
     build:
       context: .
       dockerfile: Dockerfile
