@@ -9,7 +9,7 @@ services:
       - "80:80"
     volumes:
       - ./websites:/websites
-      - ./nginx-conf:/etc/nginx/conf.d
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php
     # PHP FPM Service
