@@ -3499,8 +3499,24 @@ ul.gallery {
         /* reset */
         padding-bottom: calc(100% * 2 / 3);
         margin: 0 0 -2.9em; }
-    #admin main .adminlist.dual li.pdfnotfound a.thumb.pdf_file {
-      background-color: peru !important; }
+    #admin main .adminlist.dual li.pdfnotfound {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      color: white; }
+      #admin main .adminlist.dual li.pdfnotfound a.thumb.pdf_file {
+        background-color: red !important;
+        width: 100%;
+        height: 0;
+        padding: 0;
+        /* reset */
+        margin: 0 0 -2.9em;
+        background-image: none;
+        padding-bottom: calc(100% * 1); }
   #admin main .adminlist.dual input[type="submit"] {
     color: white;
     border-width: 0;
@@ -4150,7 +4166,7 @@ ul.gallery {
           line-height: 1.25;
           color: white; }
     #admin main .uploadpreview div.previews .pdf a.notfound {
-      background-color: peru !important; }
+      background-color: red !important; }
   #admin main .uploadpreview.gallery form fieldset {
     grid-template-columns: repeat(9, 1fr); }
     #admin main .uploadpreview.gallery form fieldset legend {

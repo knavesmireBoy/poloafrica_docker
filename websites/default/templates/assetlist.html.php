@@ -30,12 +30,12 @@
       if (file_exists($path)) {
         if ($isimage) {
       ?>
-          <li><a class="<?= $_klas ?>" href="<?= $routes['edit'] . $file->id ?>" title="click to edit"><img src="/<?= $path; ?>"></a>
+          <li><a class="<?= $_klas ?>" href="<?= $routes['edit'] . $file->id ?>" title="<?= $path ?>"><img src="/<?= $path; ?>"></a>
             <a class="trash" title="delete" href="<?= $routes['action'] .  $file->id . '/delete'; ?>">delete</a>
           </li>
         <?php
         } else { ?>
-          <li><a class="<?= $_klas ?>" href="<?= $routes['edit'] . $file->id ?>" title="click to edit">
+          <li><a class="<?= $_klas ?>" href="<?= $routes['edit'] . $file->id ?>" title="<?= $path ?>">
               <?php
               include '_video.html.php';
               ?>
@@ -48,7 +48,7 @@
         if ($isimage || $video) { ?>
           <li class="notfound">
             <a class="<?= $_klas ?>" href="<?= ASSET_EDIT ?><?= $file->id ?>" title="<?= $path; ?>"><img src="<?= FILENOTFOUND ?>"></a>
-            FILE NOT FOUND<a class="trash" title="delete" href="<?= $routes['action'] .  $file->id . '/delete'; ?>">delete</a>
+            FILE NOT FOUND<a class="trash" title="delete from database" href="<?= $routes['action'] .  $file->id . '/delete'; ?>">delete</a>
           </li>
   <?php  }
       }
