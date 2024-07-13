@@ -47,8 +47,8 @@
       } else {
         if ($isimage || $video) { ?>
           <li class="notfound">
-            <a href="<?= ASSET_EDIT ?><?= $file->id ?>" title="<?= $path; ?>"></a>
-            FILE NOT FOUND
+            <a class="<?= $_klas ?>" href="<?= ASSET_EDIT ?><?= $file->id ?>" title="<?= $path; ?>"><img src="<?= FILENOTFOUND ?>"></a>
+            FILE NOT FOUND<a class="trash" title="delete" href="<?= $routes['action'] .  $file->id . '/delete'; ?>">delete</a>
           </li>
   <?php  }
       }

@@ -11,9 +11,8 @@ services:
       - ./websites:/websites
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
-      - myphp
+      - php
   php:
-    container_name: myphp
     build:
       context: .
       dockerfile: Dockerfile

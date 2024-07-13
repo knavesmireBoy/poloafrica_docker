@@ -26,6 +26,7 @@ define("IMG", 'resources/images/');
 define("IMAGES", 'resources/images/articles/fullsize/');
 define("THUMBS", 'resources/images/articles/thumb/');
 define("DEV", 'resources/images/dev/');
+define("FILENOTFOUND", '/resources/images/dev/beatles-for-sale.jpg');
 define("VIDEO_MEDLEY", 'resources/video/medley/');
 define("VIDEO_PATH", 'resources/video/');
 

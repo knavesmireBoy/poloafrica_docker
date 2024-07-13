@@ -3490,7 +3490,7 @@ ul.gallery {
       flex-wrap: nowrap;
       flex-direction: column;
       color: white; }
-      #admin main .adminlist.dual li.notfound a {
+      #admin main .adminlist.dual li.notfound a:first-child {
         width: 100%;
         background-image: url(../images/dev/beatles-for-sale.jpg);
         background-size: cover;
@@ -3498,7 +3498,7 @@ ul.gallery {
         padding: 0;
         /* reset */
         padding-bottom: calc(100% * 2 / 3);
-        margin: 0 0 -1.1em; }
+        margin: 0 0 -2.9em; }
     #admin main .adminlist.dual li.pdfnotfound a.thumb.pdf_file {
       background-color: peru !important; }
   #admin main .adminlist.dual input[type="submit"] {
