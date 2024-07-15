@@ -13,6 +13,12 @@ $myaccept = 'Upload failed. The file type may not be acceptable.';
 $types = ['webp'];
 $max = preg_replace('/M$/', 'mb', ini_get('post_max_size'));
 
+$k = explode('_', $key);
+if(isset($k[1])){
+    $key = $k[0];
+    $arg = $k[1];
+}
+
 $lookup = [
     'accept' => 'Upload failed. The file type may not be acceptable.',
     'access' =>  'An error occurred while uploading the file to the destination directory. Ensure that the web server has access to write in the path directory.',
@@ -25,7 +31,7 @@ $lookup = [
     'choose' => "Did you forget to choose a file for upload?",
     'copy' =>  'The file uploaded to the remote location but failed to copy to the destination directory. Ensure that the web server has access to write in the path directory.',
     'exist' => "The file does not exist in the target folder - please check the spelling",
-    'exceeds' => "You attempted to upload a file of<span>$arg</span> which exceeds the maximum upload limit of<span>$max</span>",
+    'exceeds' => "You attempted to upload a file of <span>$arg</span> which exceeds the maximum upload limit of <span>$max</span>",
     'existed' => "The file does not exist in the target folder; the reference to it has been removed from the database.",
     'ext' => "Asset cannot be assigned as the replacement file is the wrong type",
     'landscape' => "You are attempting to load a landscape image into a portrait slot<br> $up",
