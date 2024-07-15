@@ -11,6 +11,7 @@ if (isset($routes)) {
 }
 $myaccept = 'Upload failed. The file type may not be acceptable.';
 $types = ['webp'];
+$arg = '';
 $max = preg_replace('/M$/', 'mb', ini_get('post_max_size'));
 
 $k = explode('_', $key);
