@@ -26,11 +26,16 @@ class PoloAfricaWebsite implements Website
     }
     public function __construct(private $pp)
     {
+        
+        
+        $pwd = $_ENV['MYSQL_PASSWORD'];
+        $user = $_ENV['MYSQL_USER'];
+        $dbname = $_ENV['MYSQL_DATABASE'];
         $this->pdo = new \PDO(
             //'mysql:host=localhost;dbname=polafrica;charset=utf8mb4',
-            'mysql:host=mydb;dbname=polafrica;charset=utf8mb4',
-            'dbuser',
-            'covid19@krauq'
+            "mysql:host=mydb;dbname=$dbname;charset=utf8mb4",
+            $user,
+            $pwd
         );
 
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

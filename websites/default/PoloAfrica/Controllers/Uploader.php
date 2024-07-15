@@ -191,7 +191,9 @@ abstract class Uploader
             }
         } //ok
         else {
-            reLocate("$mycontroller/upload/$myid/0/choose", '../../');
+            $u = floor($_SERVER['CONTENT_LENGTH'] / 1000000) . 'mb';
+            $msg = empty($_FILES) ? 'exceeds' : 'choose';
+            reLocate("$mycontroller/upload/$myid/0/$msg/$u", '../../');
         }
     }
 

@@ -437,7 +437,7 @@ class Asset extends Uploader
         }
     }
 
-    public function upload($articleId = 0, $assetId = 0, $key = '')
+    public function upload($articleId = 0, $assetId = 0, $key = '', $arg = '')
     {
       // dump(func_get_args());
 
@@ -475,6 +475,7 @@ class Asset extends Uploader
                 'ratio' => $this->ratio,
                 'warning' => '',
                 'key' => $key,
+                'arg' => $arg,
                 'mytitle' => $title,
                 'accept' => $this->accept,
                 'exit_guide' => ASSET_UPLOAD . $articleId . '/omitguide',

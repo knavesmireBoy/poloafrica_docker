@@ -40,9 +40,9 @@ if (!window.poloAfrica) {
       button = el.querySelector("input[type=submit]");
     if (el) {
       el.style.background =
-        "linear-gradient(to right, indigo, indigo " +
+        "linear-gradient(to right, #54008b, #54008b " +
         calc() +
-        "%, khaki " +
+        "%, #176b3d " +
         calc() +
         "%)";
     }
