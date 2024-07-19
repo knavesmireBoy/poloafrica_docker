@@ -22,6 +22,15 @@ if (!window.poloAfrica) {
     boxes.forEach((el) => (el.checked = checked));
   }
 
+  function on_submit(sz = 666) {
+    if (document.getElementById("upload").files[0].size > sz) {
+      alert("File is too big.");
+      return false;
+    }
+    return true;
+  }
+
+
   function displayLoading() {
     var image = document.createElement("img"),
       element = document.querySelector(".pic");
