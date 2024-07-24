@@ -26,7 +26,7 @@ if (!window.poloAfrica) {
     return outer;
   }
 
-  function pageFromPic(el) {
+  function getExitPage(el) {
     if (el.id === "exit") {
       let q = $("slide") ? "#slide img" : "#base img",
         path = getExitPath(meta.$Q(q)),
@@ -387,7 +387,7 @@ if (!window.poloAfrica) {
                 a = getMyLink(e.target);
               if (a && a.href) {
                 url += a.getAttribute("href");
-                pp = pageFromPic(e.target);
+                pp = getExitPage(e.target);
                 if (!isNaN(pp)) {
                   url += `/${pp}`;
                 }
