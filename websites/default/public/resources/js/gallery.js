@@ -6,8 +6,6 @@ if (!window.poloAfrica) {
   window.poloAfrica = {};
 }
 (function (reverse, base_click_point, pagination) {
-
-
   function maxWidth(n) {
     return window.viewportSize.getWidth() <= n;
   }
@@ -26,6 +24,26 @@ if (!window.poloAfrica) {
       }
     }
     return outer;
+  }
+
+  function pageFromPic(el) {
+    if (el.id === "exit") {
+      let q = $("slide") ? "#slide img" : "#base img",
+        path = getExitPath(meta.$Q(q)),
+        myform = $("play"),
+        index,
+        mypaths,
+        mypath = path.split("/");
+      mypath = mypath[mypath.length - 1];
+      mypaths = myform.paths.value
+        .split(";")
+        .map((attrs) => attrs.split(",")[0]);
+      index = mypaths.findIndex((pth) => pth === mypath);
+      index = index >= 0 ? index + 1 : null;
+      if (index) {
+        return pagination.findIndex((i) => i >= index);
+      }
+    }
   }
 
   function getLocation(e) {
@@ -158,7 +176,7 @@ if (!window.poloAfrica) {
     getMyImg = curry3(utils.getTargetNode)("firstChild")(/img/i),
     helpers = utils.getAjaxHelpers([
       /\w+\/$/,
-      /gallery\/display/,
+      ///gallery\/display/,
       /user\/admin/,
       /#/,
     ]),
@@ -295,7 +313,7 @@ if (!window.poloAfrica) {
                 let el = getNextImg(), //run before $player.suspend
                   path = getExitPath(el);
                 $player.suspend();
-                //myPlayer = null; 
+                //myPlayer = null;
                 //above line not required as a fresh instance of xhr is created by start()
                 //and xhr.captureData creates a new myPlayer
                 url += path;
@@ -305,7 +323,7 @@ if (!window.poloAfrica) {
             }
           }; //back/forward
           //more specific stopPropagation to parent
-          
+
           $playb.onclick = (e) => {
             e.stopPropagation();
             e.preventDefault();
@@ -363,10 +381,16 @@ if (!window.poloAfrica) {
             }
 
             if (!exit) {
+              //maybe exit button or pagenav or pic
               e.stopPropagation();
-              let a = getMyLink(e.target);
+              let pp,
+                a = getMyLink(e.target);
               if (a && a.href) {
                 url += a.getAttribute("href");
+                pp = pageFromPic(e.target);
+                if (!isNaN(pp)) {
+                  url += `/${pp}`;
+                }
                 return !start();
               }
             }
@@ -388,7 +412,7 @@ if (!window.poloAfrica) {
       ajaxCB = function () {
         var links = meta.$Q("#content a", true),
           i = 0;
-        
+
         for (i = 0; i < links.length; i++) {
           if (helpers.includeLinks(links[i])) {
             init(links[i]);
@@ -399,7 +423,7 @@ if (!window.poloAfrica) {
     if ($controls) {
       meta.$Q("footer").addEventListener("mouseover", undostatic);
       $controls.addEventListener("mouseover", dostatic);
-      utils.removeElement(document.getElementById('enable-js'));
+      utils.removeElement(document.getElementById("enable-js"));
     }
     xhr.setContainer(element);
     xhr.setUrl("");

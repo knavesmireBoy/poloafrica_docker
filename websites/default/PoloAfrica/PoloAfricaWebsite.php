@@ -26,8 +26,6 @@ class PoloAfricaWebsite implements Website
     }
     public function __construct(private $pp)
     {
-        
-        
         $pwd = $_ENV['MYSQL_PASSWORD'];
         $user = $_ENV['MYSQL_USER'];
         $dbname = $_ENV['MYSQL_DATABASE'];

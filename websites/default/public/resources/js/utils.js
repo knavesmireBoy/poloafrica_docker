@@ -110,9 +110,11 @@ function processResponse(canvas, request, container = ".wrap", permit = false) {
     }
   }
   mycanvas = frag.querySelector(container);
-  canvas.appendChild(mycanvas);
-  cb = append(canvas);
-  scripts.forEach(cb);
+  if (mycanvas) {
+    canvas.appendChild(mycanvas);
+    cb = append(canvas);
+    scripts.forEach(cb);
+  }
 }
 
 function fromPost(form) {
