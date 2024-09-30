@@ -12,6 +12,8 @@ services:
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php
+    networks:
+      - polonet 
   php:
     build:
       context: .
@@ -27,6 +29,8 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
+    networks:
+      - polonet  
   mydb:
     container_name: mydb
     image: mariadb:latest
@@ -37,6 +41,22 @@ services:
       - MYSQL_DATABASE
     volumes:
       - mysqldata:/var/lib/mysql
-# Volumes
+    networks:
+      - polonet  
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: poloadmin
+    environment:
+      PMA_HOST: mydb
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8081:80"
+    networks:
+      - polonet
+    depends_on:
+      - mydb    
 volumes:
   mysqldata: {}
+networks:
+  polonet:
+    driver: bridge
