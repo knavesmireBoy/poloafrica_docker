@@ -27,8 +27,14 @@ poloAfrica.markup = (function () {
     return tag && tags.indexOf(mytag) !== -1 ? tag : null;
   }
 
-  function foo(ancr, tag) {
+  function fixMissingTitle(t) {
+    var mytitle = `###[${t}][1]\n`;
+    tx.value = mytitle + tx.value;
+    tx.value += `\n[1]:#`;
+    return mytitle;
+  }
 
+  function foo(ancr, tag) {
     let data = [
       ["heading", "Create headings from h1 thru h6"],
       ["bold", "toggle bold text"],
@@ -41,7 +47,7 @@ poloAfrica.markup = (function () {
       ["list", "toggle from paragraph to list"],
       ["img", "insert an image"],
       ["revert", "clear all edits"],
-      ["help", "toggle a handy guide"]
+      ["help", "toggle a handy guide"],
     ];
 
     let mytag = document.createElement(tag);
@@ -99,7 +105,7 @@ poloAfrica.markup = (function () {
       };
     },
     Maker = (tx) => {
-     // if(!tx) { return {} };
+      // if(!tx) { return {} };
       let cache = tx.value,
         header = 0;
       const emphasis = /\**([^*]+)\**/g,
@@ -246,10 +252,17 @@ poloAfrica.markup = (function () {
         sortLinkAttributes = (flag) => (flag ? " {target=_blank}" : ""),
         sortLinkType = (str) => (leadingSlash(str) ? str.substring(1) : str),
         getCurrentLinkRef = () => {
-          var res = tx.value.match(endlinkref),
-            lastitem = res[res.length - 1],
-            i = 0,
+          var i,
+            j,
+            lastitem,
+            res = tx.value.match(endlinkref);
+
+          if (res) {
+            lastitem = res[res.length - 1];
+            i = 0;
             j = 0;
+          }
+
           //[1][2]... [10]
           if (lastitem) {
             i = Number(lastitem.slice(1, 2));
@@ -257,8 +270,10 @@ poloAfrica.markup = (function () {
             //j will be NaN 9] until we get to 10]
             //we will not be entertaining the prospect of 100] links per article
             return isNaN(j) ? i + 1 : j + 1;
+          } else {
+            var title = tx.form.title.value;
+            return fixMissingTitle(title);
           }
-          return 1;
         },
         getReferenceDef = (n) => "[" + n + "]:",
         setReferenceDef = (str, i) => "[" + str + "][" + i + "]",
@@ -479,6 +494,15 @@ poloAfrica.markup = (function () {
                 external = attrs.indexOf("http");
               attrs = setLinkTitle(attrs);
               i = getCurrentLinkRef(selection);
+              /*return created title ###My Missing Heading[1]
+              to fix situation where the copy is missing one
+              */
+              if (isNaN(i)) {
+                from += i.length;
+                to += i.length;
+                i = 2;
+              }
+
               tx.value =
                 tx.value.slice(0, from) +
                 setReferenceDef(selection, i) +

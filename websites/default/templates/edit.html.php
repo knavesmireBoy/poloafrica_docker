@@ -31,7 +31,7 @@
             <label for="summary">summary</label>
             <textarea name="summary" id="summary" placeholder="description/comments" maxlength="1000" style="height: 3em;"><?= $article->summary ?? '' ?></textarea>
           
-            <label for="content">content</label>
+            <label for="tx">content</label>
             <?php include '_controls.html.php' ?>
             <?php include 'markdown_guide.html' ?>
             <textarea name="content" id="tx" placeholder="The HTML content of the article" maxlength="200000" style="height: 20em;"><?= $article->content ?? '' ?></textarea>

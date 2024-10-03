@@ -1671,6 +1671,9 @@ header ul ul {
     top: 0;
     z-index: 1; }
 
+#bond {
+  background: white; }
+
 @media screen and (max-width: 426px) {
   #home section:nth-child(2) h3,
   #home section:nth-child(2) label {
