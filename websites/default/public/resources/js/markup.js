@@ -27,11 +27,54 @@ poloAfrica.markup = (function () {
     return tag && tags.indexOf(mytag) !== -1 ? tag : null;
   }
 
-  function fixMissingTitle(t) {
-    var mytitle = `###[${t}][1]\n`;
-    tx.value = mytitle + tx.value;
+  /*
+  we land here because of a missing link REFERENCE "[1]:#"
+  and are unable to determine the next available refrence index [1]
+  The actual link text title MAY be ok or
+  it could be missing completely or
+  without link markup ###My Title not ###[MyTitle][1]*/
+
+  function fixLinkRefs(t, myhash = "###") {
+    let mytitle = tx.value.match(/^#+\[.+\]\[1\]/),
+      repl = `[${t}][1]\n`,
+      pass,
+      [_, hash, text] = tx.value.match(/(#+)(.+)/) ?? [],
+      i = 0;
+    if (!mytitle) {
+      repl = hash ? (hash += repl) : repl;
+    }
+    if (text && !mytitle) {
+      if (t !== text) {
+        pass = confirm(
+          "Title Mismatch! replace heading text with article title?",
+          "yes"
+        );
+      }
+      if (pass) {
+        tx.value = tx.value.replace(/^(#+)([\w\s]+)\n/, "$1[" + t + "][1]\n");
+        i = t.length - text.length;
+      } else {
+        tx.value = tx.value.replace(/^(#+)([\w\s]+)\n/, `$1[$2][1]\n`);
+      }
+      /*string can be anything that passes the isNaN test and is FIVE characters long
+     equating to the missing markup characters which are [][1]*/
+      repl = "[][1]";
+      if (i) {
+        //adjust string length if we have a mismatch as a result of the confirm box
+        repl =
+          i > 0
+            ? repl.padStart(repl.length + i, "#")
+            : repl.substring(Math.abs(i));
+      }
+    } else {
+      if (!mytitle) {
+        tx.value = myhash + repl + tx.value;
+      } else {
+        repl = "";
+      }
+    }
     tx.value += `\n[1]:#`;
-    return mytitle;
+    return repl;
   }
 
   function foo(ancr, tag) {
@@ -272,7 +315,7 @@ poloAfrica.markup = (function () {
             return isNaN(j) ? i + 1 : j + 1;
           } else {
             var title = tx.form.title.value;
-            return fixMissingTitle(title);
+            return fixLinkRefs(title);
           }
         },
         getReferenceDef = (n) => "[" + n + "]:",
@@ -478,7 +521,8 @@ poloAfrica.markup = (function () {
         },
         linker = () => {
           //Let's NOT ASSUME selectionStart ARE the same (ie we are dealing with a selection) tx.selectionEnd and start the search from the appropriate place
-          let first = hasFirstWord(tx.selectionStart),
+          let i,
+            first = hasFirstWord(tx.selectionStart),
             last = hasLastWord(tx.selectionEnd),
             doFrom = first ? isLine : isSpace,
             doTo = last ? isLine : isSpace;
@@ -494,10 +538,11 @@ poloAfrica.markup = (function () {
                 external = attrs.indexOf("http");
               attrs = setLinkTitle(attrs);
               i = getCurrentLinkRef(selection);
-              /*return created title ###My Missing Heading[1]
+              /*
+              return created title ###My Missing Heading[1]
               to fix situation where the copy is missing one
               */
-              if (isNaN(i)) {
+              if (!i || isNaN(i)) {
                 from += i.length;
                 to += i.length;
                 i = 2;
@@ -543,6 +588,13 @@ poloAfrica.markup = (function () {
         toggleToolbar = doAlt([doActive, undoActive]);
       return {
         heading: function () {
+          if (!tx.value.match(/^#/)) {
+            if(tx.value.match(endlinkref)){
+              tx.value = tx.value.replace(endlinkref, '');
+            }
+            return fixLinkRefs(tx.form.title.value);
+          }
+
           let o = fixSelection(isLine);
           header = charCount(subSelect(o.from, o.to), "#");
           header += 1;
