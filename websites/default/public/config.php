@@ -125,4 +125,5 @@ define("MEDLEY", '/medley/');
 define("ENQUIRIES", '/enquiries/');
 define("PHOTOS",  '/gallery/display');
 
+
 include '../includes/autoload.php';

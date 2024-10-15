@@ -24,13 +24,13 @@ so getLink where we get the firstChild of H3 is now conditional see doGetCandida
     }, time);
   }
 
-  function doReload(page) {
+  function doReload(page = '') {
     //required because of ajax where we enter in page a change to page b then resize..
     //when getPredicate fails it would load the entry page not the current page. side issue
     //window.location.reload();
     page = page === "admin" ? "user/admin" : page;
     page = page === "photos" ? "gallery/display" : page;
-    window.location = "http://localhost/" + page;
+    window.location = window.location.origin + `/${page}`;
   }
 
   function anime2Desktop(tgt) {
