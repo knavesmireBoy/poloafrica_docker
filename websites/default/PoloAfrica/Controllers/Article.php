@@ -64,7 +64,7 @@ class Article
     private function uniq($array)
     {
         $uniq = array_unique($array);
-        return array_filter($uniq, fn ($o) => $o);
+        return array_filter($uniq, fn($o) => $o);
     }
 
     private function unsetPage($page)
@@ -82,8 +82,8 @@ class Article
         $articles = $this->table->findAll(null, 0, 0, \PDO::FETCH_ASSOC);
         $slot = $this->table->save($articles[0]);
         $slot->setName('pp');
-        $articles = array_map(fn ($o) => $o['page'], $articles);
-        $pages = array_map(fn ($o) => $o->title, $slot->findAll('id'));
+        $articles = array_map(fn($o) => $o['page'], $articles);
+        $pages = array_map(fn($o) => $o->title, $slot->findAll('id'));
         if ($active) {
             $articles = $this->uniq($articles);
             $pp = getDiff($pages, $articles);
@@ -223,14 +223,12 @@ class Article
                 $res = $article->swap($destinationID, $label);
             }
         }
-
         if ($res) {
             //need to reload
             $page = $article->getName();
-            header('Location:' . RELOAD . $page);
-            exit;
+            reLocate(RELOAD . $page);
+            //retour();
         }
-
         reLocate(ARTICLES_LIST, '../../');
     }
 
@@ -248,8 +246,8 @@ class Article
             $oldpp = $article['page'];
             $source = $this->table->save($article);
             $source->setName($oldpp);
-            $list = array_map(fn ($o) => $o->title, $source->findAll('id'));
-            $data = array_filter($list, fn ($o) => $o != $article['title']);
+            $list = array_map(fn($o) => $o->title, $source->findAll('id'));
+            $data = array_filter($list, fn($o) => $o != $article['title']);
             $source->repop($data);
             if (!$flag) { //posted by move_submit
                 $article['page'] = $_POST['page'];
@@ -274,7 +272,7 @@ class Article
     {
         //$files = $this->table->findAll('title');
         $files = $this->table->filterNull('page', false, 'title');
-        $titles = array_map(fn ($o) => $o->title, $files);
+        $titles = array_map(fn($o) => $o->title, $files);
         if (is_numeric($arg)) {
             $article = $this->fetch('table', 'id', $arg);
         } else if ($arg) {
@@ -330,7 +328,7 @@ class Article
     {
         $this->table = $table;
         $files = $table->findAll();
-        $active = array_filter($files, fn ($o) => $o->page);
+        $active = array_filter($files, fn($o) => $o->page);
         $this->setCount($active);
     }
 
@@ -400,7 +398,7 @@ class Article
     public function assets($id = 0, $key = '')
     {
         $article = $this->fetch('table', 'id', $id);
-        $assets = isset($article) ? $article->getAssets($id, fn ($item) => $item) : null;
+        $assets = isset($article) ? $article->getAssets($id, fn($item) => $item) : null;
         if (!empty($assets)) {
             return [
                 'template' => 'assetlist.html.php',
@@ -437,8 +435,7 @@ class Article
                         'h3' => 'Add Asset'
                     ]
                 ];
-            }
-            else {
+            } else {
                 retour();
             }
         }
@@ -460,10 +457,10 @@ class Article
         $this->unsetPage($page);
         //below code required when archiving; when deleting a record the database does the work (FK's)
         if (isset($_POST['child'])) {
-            $article->archiveAssets($record['id'], fn ($o) => true);
+            $article->archiveAssets($record['id'], fn($o) => true);
         }
-        $list = array_map(fn ($o) => $o->title, $article->findAll('id'));
-        $data = array_filter($list, fn ($o) => $o != $article->title);
+        $list = array_map(fn($o) => $o->title, $article->findAll('id'));
+        $data = array_filter($list, fn($o) => $o != $article->title);
         $article->repop($data, empty($data));
         if (empty($data)) {
             retour();
@@ -590,7 +587,7 @@ class Article
         $action = $this->confirmAction($perform);
         if (isset($file)) {
             $entity = $this->table->save($this->fetch('TABLE', 'id', $id));
-            $assets = $entity->getAssets($file->id, fn () => true);
+            $assets = $entity->getAssets($file->id, fn() => true);
             return [
                 'template' => 'archive.html.php',
                 'variables' => [

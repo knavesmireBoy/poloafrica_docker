@@ -22,6 +22,12 @@ if (!window.poloAfrica) {
     boxes.forEach((el) => (el.checked = checked));
   }
 
+  function checkArticleShuffle(data) {
+    //force reload if page order changes, otherwise we're out of whack
+    let res = data.match(/position=(\d)/);
+    return res ? parseFloat(res[1]) : res;
+  }
+
   function on_submit(sz = 666) {
     if (document.getElementById("upload").files[0].size > sz) {
       alert("File is too big.");
@@ -30,14 +36,12 @@ if (!window.poloAfrica) {
     return true;
   }
 
-
   function displayLoading() {
     var image = document.createElement("img"),
       element = document.querySelector(".pic");
     image.setAttribute("alt", "loading...");
     image.setAttribute("src", "/resources/images/dev/progressbar.gif");
     image.className = "loading";
-    console.log(element);
     if (element) {
       element.appendChild(image);
     }
@@ -76,6 +80,9 @@ if (!window.poloAfrica) {
     utils = poloAfrica.utils,
     log = console.log,
     defer = meta.doPartial(true),
+    invoke = (f, a) => f(a),
+    thunk = f => f(),
+    curry22 = meta.curryRight(2, true),
     curry3 = meta.curryRight(3),
     getMyLink = curry3(utils.getTargetNode)("parentNode")(/^a$/i),
     helpers = utils.getAjaxHelpers([
@@ -96,6 +103,7 @@ if (!window.poloAfrica) {
       data,
       request,
       timer,
+      validateOnSubmit = [checkArticleShuffle],
       ajaxClickCB = function (e) {
         let a = getMyLink(e.target);
         if (!a || a.nodeName !== "A") {
@@ -155,7 +163,6 @@ if (!window.poloAfrica) {
       },
       start = function () {
         request = utils.getHTTPObject();
-
         if (request && url.match(/\/\w+/i)) {
           initiateRequest();
           return true;
@@ -191,7 +198,8 @@ if (!window.poloAfrica) {
         e.stopPropagation();
         let tgt = e.target.elements ? e.target : e.target.form;
         [data] = helpers.fromPost(tgt);
-        return !start();
+        tgt = validateOnSubmit.every(curry22(invoke)(data));
+        return tgt || !start();
       };
 
     function Constr() {}
@@ -236,7 +244,6 @@ if (!window.poloAfrica) {
       record = document.getElementById("records"),
       setrecord = document.getElementById("setrecords"),
       ajaxCB = () => {
-        //interrogate fresh DOM
         var forms = document.forms,
           links = meta.$Q("#content a", true),
           controls = document.getElementById("controls"),

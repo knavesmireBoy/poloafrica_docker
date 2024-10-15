@@ -556,6 +556,7 @@ poloAfrica.utils = (function () {
             pass = [ispublic, ishome, isphoto].reduce((agg, cur) =>
               agg ? agg : cur
             );
+            console.log(newpage, txt, admin);
           return !pass && fubar(newpage, txt, admin);
         },
         processResponse: processResponse,
