@@ -23,9 +23,8 @@ if (!window.poloAfrica) {
   }
 
   function checkArticlePosition(data) {
-    //force reload if page order changes, otherwise we're out of whack
+    //forces reload to public page if order changes,
     let res = data.match(/position=(\d)/);
-    log(33, res, data);
     return res ? Number(res[1]) : res;
   }
 
