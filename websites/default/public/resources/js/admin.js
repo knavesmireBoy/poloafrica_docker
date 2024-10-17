@@ -22,10 +22,11 @@ if (!window.poloAfrica) {
     boxes.forEach((el) => (el.checked = checked));
   }
 
-  function checkArticleShuffle(data) {
+  function checkArticlePosition(data) {
     //force reload if page order changes, otherwise we're out of whack
     let res = data.match(/position=(\d)/);
-    return res ? parseFloat(res[1]) : res;
+    log(33, res, data);
+    return res ? Number(res[1]) : res;
   }
 
   function on_submit(sz = 666) {
@@ -82,7 +83,7 @@ if (!window.poloAfrica) {
     defer = meta.doPartial(true),
     invoke = (f, a) => f(a),
     thunk = f => f(),
-    curry22 = meta.curryRight(2, true),
+    curry2 = meta.curryRight(2),
     curry3 = meta.curryRight(3),
     getMyLink = curry3(utils.getTargetNode)("parentNode")(/^a$/i),
     helpers = utils.getAjaxHelpers([
@@ -103,7 +104,7 @@ if (!window.poloAfrica) {
       data,
       request,
       timer,
-      validateOnSubmit = [checkArticleShuffle],
+      submitValidators = [checkArticlePosition],
       ajaxClickCB = function (e) {
         let a = getMyLink(e.target);
         if (!a || a.nodeName !== "A") {
@@ -196,10 +197,11 @@ if (!window.poloAfrica) {
       },
       mysubmit = function (e) {
         e.stopPropagation();
-        let tgt = e.target.elements ? e.target : e.target.form;
+        let tgt = e.target.elements ? e.target : e.target.form,
+        res;
         [data] = helpers.fromPost(tgt);
-        tgt = validateOnSubmit.every(curry22(invoke)(data));
-        return tgt || !start();
+        res = submitValidators.every(curry2(invoke)(data));
+        return res || !start();
       };
 
     function Constr() {}
