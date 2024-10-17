@@ -1,0 +1,74 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - php
+    networks:
+      - frontnet
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.labels.type==public"
+    volumes:
+      - ./websites:/websites
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d
+
+  mydb:
+    container_name: mydb
+    image: mariadb:latest
+    restart: always
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.labels.type==db"
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+    expose:
+      - "3306"
+    networks:
+      - frontnet
+    volumes:
+      - type: bind
+        source: /data/mysqldata
+        target: /var/lib/mysql
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/svc-notes
+    container_name: polo-africa
+    restart: always
+    ports:
+      - "9000"
+    volumes:
+      - ./websites:/websites
+      - ./php-logging.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.labels.type==public"
+    depends_on:
+      - mydb
+    environment:
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+    networks:
+      - frontnet
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
+
+networks:
+  frontnet:
+    driver: overlay
