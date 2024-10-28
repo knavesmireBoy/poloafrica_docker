@@ -24,7 +24,7 @@ so getLink where we get the firstChild of H3 is now conditional see doGetCandida
     }, time);
   }
 
-  function doReload(page = '') {
+  function doReload(page = "") {
     //required because of ajax where we enter in page a change to page b then resize..
     //when getPredicate fails it would load the entry page not the current page. side issue
     //window.location.reload();
@@ -39,7 +39,17 @@ so getLink where we get the firstChild of H3 is now conditional see doGetCandida
       t.parentNode.insertBefore(tgt, t);
     }
   }
-
+  /*
+  function funk(str) {
+    const func = (transform) =>
+      [...str].filter((char) => {
+        return char === [transform(char)].join('');
+  });
+    const str1 = func((char) => char.toUpperCase());
+    const str2 = func((char) => char.toLowerCase());
+    return str1 + str2;
+  }
+*/
   function anime2Mobile(tgt) {
     if (tgt) {
       let t = tgt.nextSibling,
@@ -76,7 +86,7 @@ so getLink where we get the firstChild of H3 is now conditional see doGetCandida
     let map = strings.map((s) => s.length),
       min = Math.min(...map),
       max = Math.max(...map),
-      diff = (max - min);
+      diff = max - min;
     diff = diff / 2;
     return map.map((i) => Math.round(i / diff));
   }
@@ -461,6 +471,13 @@ so getLink where we get the firstChild of H3 is now conditional see doGetCandida
     moveAnime();
     headers.forEach(doLeading);
   }
+  /*
+  func("aBcDeF"); // 'BDFace'
+func("abcdef"); // 'abcdef'
+func("ABCDEF"); // 'ABCDEF'
+func("a b C D e"); // '  C D a b   e'
+func("aaBBccDD"); // 'BBDDaacc'
+*/
   //utils.report();
 })(
   "(max-width: 750px)",
