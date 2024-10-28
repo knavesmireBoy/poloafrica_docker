@@ -28,24 +28,6 @@ if (!window.poloAfrica) {
     return res ? Number(res[1]) : res;
   }
 
-  function on_submit(sz = 666) {
-    if (document.getElementById("upload").files[0].size > sz) {
-      alert("File is too big.");
-      return false;
-    }
-    return true;
-  }
-
-  function displayLoading() {
-    var image = document.createElement("img"),
-      element = document.querySelector(".pic");
-    image.setAttribute("alt", "loading...");
-    image.setAttribute("src", "/resources/images/dev/progressbar.gif");
-    image.className = "loading";
-    if (element) {
-      element.appendChild(image);
-    }
-  }
   //https://codeshack.io/file-upload-progress-bar-js-php/
   function uploadProgress(e) {
     let calc = () => Math.round((e.loaded / e.total) * 100),
