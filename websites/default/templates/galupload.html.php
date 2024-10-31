@@ -2,6 +2,9 @@
 $incsubmit = true;
 $assign = '';
 $link = '';
+$_path = '';
+$_alt = '';
+$_id = '';
 $para = empty($orphans) ? '' : 'Remove any unassigned images <a href="' . GAL_MANAGE  . '">here</a>.';
 
 $uploadguide = isset($_COOKIE['upload_guide']);
@@ -10,7 +13,10 @@ $guide = $uploadguide ? " Please restore the <a href='/gallery/upload/$imgId/tru
 $para .= $guide;
 
 $imgroute = preg_match('/slide/', $previewklas);
-$imgroute = $imgroute ? GAL_UP . $img->id : GAL_UP . $img->id  . "/$img->id";
+
+if($imgId){
+    $imgroute = $imgroute ? GAL_UP . $img->id : GAL_UP . $img->id  . "/$img->id";
+}
 
 if (isset($img->id)) {
     $link = GAL_ASSIGN . $img->id;
@@ -47,8 +53,14 @@ if (isset($message)) { ?>
     </form>
     <div class="previews">
         <?php
-        if (isset($img->path) && file_exists(GALLERY . $img->path)) { ?>
-            <figure><a href="<?= $imgroute; ?>"><img alt='<?= $img->alt ?>' src='/<?= GALLERY . $img->path ?>' /></a>
+        if(isset($img)){
+            $_path = $img->path;
+            $_alt =  $img->alt;
+            $_id = $img->id;
+        }
+       
+        if (!empty($_path) && file_exists(GALLERY . $_path)) { ?>
+            <figure><a href="<?= $imgroute; ?>"><img alt='<?= $_alt ?>' src='/<?= GALLERY . $_path ?>' /></a>
                 <?php if (!empty($info)) { ?>
                     <figcaption><?= 'ratio: ' . $info['ratio'] . '<br> max: ' . $info['max'] . 'px' ?></figcaption>
                 <?php } ?>
@@ -56,7 +68,7 @@ if (isset($message)) { ?>
         <?php
         } else { ?>
             <figure class="notfound">
-                <a href="<?= ASSET_EDIT ?><?= $img->id ?>" title="file not found"></a>
+                <a href="<?= ASSET_EDIT ?><?= $_id; ?>" title="file not found"></a>
                 <figcaption>FILE NOT FOUND</figcaption>
             </figure>
         <?php }
