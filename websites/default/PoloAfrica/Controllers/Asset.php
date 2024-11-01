@@ -664,6 +664,7 @@ class Asset extends Uploader
                     foreach($attrs as $k => $v){
                         $resident[$k] = $v;
                     }
+                    //note no explicit assign button if we have the orphan dropdown menu
                     $record = $this->setAttributes($resident, $_POST['assign'] ?? $resident['article_id']);
                     $record['id'] = $record['id'] ?? $id;
                 }
