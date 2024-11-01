@@ -13,7 +13,7 @@ services:
     depends_on:
       - php
     networks:
-      - polonet 
+      - frontnet 
   php:
     build:
       context: .
@@ -30,7 +30,8 @@ services:
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
     networks:
-      - polonet  
+      - frontnet
+      - backnet
   mydb:
     container_name: mydb
     image: mariadb:latest
@@ -42,7 +43,7 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
     networks:
-      - polonet  
+      - backnet  
   phpmyadmin:
     image: phpmyadmin:5.2.1
     container_name: poloadmin
@@ -52,11 +53,14 @@ services:
     ports:
       - "8081:80"
     networks:
-      - polonet
+      - frontnet
+      - backnet
     depends_on:
       - mydb    
 volumes:
   mysqldata: {}
 networks:
-  polonet:
+  frontnet:
     driver: bridge
+  backnet:
+    driver: bridge  
