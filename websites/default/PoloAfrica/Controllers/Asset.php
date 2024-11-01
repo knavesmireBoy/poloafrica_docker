@@ -664,7 +664,7 @@ class Asset extends Uploader
                     foreach($attrs as $k => $v){
                         $resident[$k] = $v;
                     }
-                    $record = $this->setAttributes($resident ?? $_POST['data'], $_POST['assign'] ?? $resident['article_id']);
+                    $record = $this->setAttributes($resident, $_POST['assign'] ?? $resident['article_id']);
                     $record['id'] = $record['id'] ?? $id;
                 }
             }
