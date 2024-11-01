@@ -32,15 +32,15 @@ class Asset extends Uploader
         if (is_bool($path)) {
             return [$active, $archived];
         }
-        $paths = array_map(fn ($item) => $item['path'], $active);
-        $orphans = array_map(fn ($item) => $item['path'], $archived);
+        $paths = array_map(fn($item) => $item['path'], $active);
+        $orphans = array_map(fn($item) => $item['path'], $archived);
         return [in_array($path, $paths), in_array($path, $orphans)];
     }
 
     private function getDirectory(\PoloAfrica\Entity\Asset $asset)
     {
         if (isset($asset)) {
-            $video = array_map(fn ($o) => substr($o, 1), VIDEO_EXT); // '.mp4' to 'mp4'..
+            $video = array_map(fn($o) => substr($o, 1), VIDEO_EXT); // '.mp4' to 'mp4'..
             $pp = $asset ? $asset->getArticle($asset->id, 'page') : '';
             $ext = $asset ? $this->getExtension($asset->path) : '';
             $dir = in_array($ext, $video);
@@ -61,8 +61,8 @@ class Asset extends Uploader
             list($assigned, $archived) = $this->getSubGroups($file->path);
             if ($assigned && $archived) {
                 list($assigned, $archived) = $this->getSubGroups(true);
-                $players = array_filter($assigned, fn ($o) => $o['id'] == $id);
-                $orphans = array_filter($archived, fn ($o) => $o['id'] == $id);
+                $players = array_filter($assigned, fn($o) => $o['id'] == $id);
+                $orphans = array_filter($archived, fn($o) => $o['id'] == $id);
                 if (!empty($players)) {
                     $files = $this->table->find('path', $file->path);
                     return count($files) > 1 ? [] : $files;
@@ -127,7 +127,7 @@ class Asset extends Uploader
             $resident = toObject($resident, true);
             //siganture expects a $resident as an assoc array ['id' => 1, path' => 'my.jpg', ...];
             //$candidate can be a wrapper around a filename : ['path' => 'my.jpg'];
-            list($res, $cand) = array_map(fn ($o) => $o['path'], [$resident, $candidate]);
+            list($res, $cand) = array_map(fn($o) => $o['path'], [$resident, $candidate]);
             list($old, $neu) = array_map([$this, 'getExtension'], [$res, $cand]);
             $res = $this->archive($resident, $old, $neu);
             if (!$res) {
@@ -308,7 +308,7 @@ class Asset extends Uploader
     protected function checkPath($path, $coll = [])
     {
         $coll = empty($coll) ? $this->table->findAll(null, 0, 0, \PDO::FETCH_ASSOC) : $coll;
-        $paths = array_map(fn ($o) => $o['path'], $coll);
+        $paths = array_map(fn($o) => $o['path'], $coll);
         return in_array($path, $paths);
     }
 
@@ -349,7 +349,7 @@ class Asset extends Uploader
     protected function deActivate($filename, $id)
     {
         $article_assets = $this->table->find('article_id', $id);
-        $paths = array_map(fn ($o) => $o->path, $article_assets);
+        $paths = array_map(fn($o) => $o->path, $article_assets);
         return in_array($filename, $paths) ? false : true;
     }
     public function prepareValues($fileName, $arg = 'upload')
@@ -389,7 +389,7 @@ class Asset extends Uploader
             }
             $replace = $this->deActivate($fileName, $aId);
         } else {
-            $asset = $this->filter($article_assets, fn ($o) => $o->path == $fileName);
+            $asset = $this->filter($article_assets, fn($o) => $o->path == $fileName);
             $updateId = $asset ? $asset->id : $updateId;
         }
         if ($replace) {
@@ -439,7 +439,7 @@ class Asset extends Uploader
 
     public function upload($articleId = 0, $assetId = 0, $key = '')
     {
-      // dump(func_get_args());
+        // dump(func_get_args());
 
         $files = $this->table->find('article_id', $articleId, null, 0, 0, \PDO::FETCH_ASSOC);
         $file = isset($files[0]) ? $files[0] : $this->table->find('id', $assetId);
@@ -611,6 +611,7 @@ class Asset extends Uploader
             reLocate(REG);
         }
         $id = $_POST['pk'] ?? null;
+
         $orphanCount = $_POST['orphans'] ?? 0;
         $resident = $this->fetch('TABLE', 'id', $id);
         $orphan = $this->fetch('TABLE', 'id', $_POST['data']['path']);
@@ -644,6 +645,7 @@ class Asset extends Uploader
                     $record['article_id'] = isset($_POST['assign']) ? $_POST['data']['article_id'] : null;
                 }
             }
+
             if (!isset($record)) { //no activity above
                 if ($orphan && $orphanCount) {
                     $orphan['article_id'] = $_POST['data']['article_id'];
@@ -658,7 +660,11 @@ class Asset extends Uploader
                 }
                 if (!isset($record)) { //still no activity, just editing attributes
                     $archived = 'uploaded';
-                    $record = $this->setAttributes($resident ?? $_POST['data'], $_POST['assign'] ?? null);
+                    $attrs = array_diff($_POST['data'], $resident);
+                    foreach($attrs as $k => $v){
+                        $resident[$k] = $v;
+                    }
+                    $record = $this->setAttributes($resident ?? $_POST['data'], $_POST['assign'] ?? $resident['article_id']);
                     $record['id'] = $record['id'] ?? $id;
                 }
             }
@@ -668,11 +674,10 @@ class Asset extends Uploader
                 $orphan['article_id'] = $_POST['data']['article_id'];
                 $record = $this->validateUpdate($orphan, $resident, ['alt', 'ATTR_ID']);
             } else {
-                $record = $this->reinstate($_POST['data'], $this->setAttributes($_POST['data'], $_POST['assign'] ?? null));
+                $record = $this->reinstate($_POST['data'], $this->setAttributes($_POST['data'], isset($_POST['assign'])));
             }
             $relocate = $relocate ? $relocate : !$this->insertAllowed($record, $replace);
         }
-
         if ($relocate) {
             $id = $_POST['data']['article_id'];
             reLocate(ASSETS_EDIT . "$id/allowed", '../../');
@@ -716,7 +721,7 @@ class Asset extends Uploader
         if (!empty($_POST)) {
             $backup = isset($_POST['backup']);
             $archived = isset($_POST['all']) ? $this->getOrphans('article_id') : [];
-            $pics = isset($_POST['pics']) ? $_POST['pics'] : array_map(fn ($o) => $o->id, $archived);
+            $pics = isset($_POST['pics']) ? $_POST['pics'] : array_map(fn($o) => $o->id, $archived);
             foreach ($pics as $k) {
                 $pic = $this->fetch('table', 'id', $k);
                 if ($pic && isset($pic->path)) {
