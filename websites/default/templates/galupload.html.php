@@ -55,12 +55,13 @@ if (isset($message)) { ?>
         <?php
         if(isset($img)){
             $_path = $img->path;
+            //$_path = $img?->path; PHP8
             $_alt =  $img->alt;
             $_id = $img->id;
         }
        
         if (!empty($_path) && file_exists(GALLERY . $_path)) { ?>
-            <figure><a href="<?= $imgroute; ?>"><img alt='<?= $_alt ?>' src='/<?= GALLERY . $_path ?>' /></a>
+            <figure><a href="<?= $imgroute || ''; ?>"><img alt='<?= $_alt ?>' src='/<?= GALLERY . $_path ?>' /></a>
                 <?php if (!empty($info)) { ?>
                     <figcaption><?= 'ratio: ' . $info['ratio'] . '<br> max: ' . $info['max'] . 'px' ?></figcaption>
                 <?php } ?>
