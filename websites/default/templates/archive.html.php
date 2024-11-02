@@ -6,13 +6,16 @@ $name = empty($name) ? $file->path ?? '' : $name;
 $record = $name ? ' the record: ' : ' this record';
 $article = isset($assets) && !empty($assets);
 
-//$_actions = ['delete', 'archive', 'replace'];
+//$_actions = ['delete', 'destroy', 'archive', 'replace'];
 
-if ($perform === 'delete') { ?>
+if (preg_match('/^de/', $perform)) { ?>
   <div class="affirm">
-    <p>Are you sure you want to <strong><?= $perform; ?></strong><?= $record; ?><strong><em><?= $name; ?></em></strong>?</p>
-    <p>You may prefer to <a href="<?= $confirm . $id . '/archive' ?>">archive</a> this record for future deployment.</p>
+    <p>Are you sure you want to <strong>delete</strong><?= $record; ?><strong><em><?= $name; ?></em></strong>?</p>
     <?php
+    if ($perform === 'delete') { ?>
+      <p>You may prefer to <a href="<?= $confirm . $id . '/archive' ?>">archive</a> this record for future deployment.</p>
+    <?php
+    }
     if (empty($replace)) { ?>
       <p>By default related assets will be archived rather than deleted, so they can be potentially deployed in a future article.</p>
   </div>

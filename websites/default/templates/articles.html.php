@@ -39,7 +39,7 @@ if (!empty($select['options'])) : ?>
     <li>
       <a href="<?= ARTICLES_EDIT . $file->id ?>" title="click to edit">
         <?= html2($file->title); ?></a>
-      <a class="trash" title="<?= $perform ?>" href="<?= $action .  $file->id . '/delete'; ?>">delete</a>
+      <a class="trash" title="<?= $perform ?>" href="<?= $action .  $file->id . '/' . $perform; ?>">delete</a>
     </li>
   <?php endforeach; ?>
 </ul>

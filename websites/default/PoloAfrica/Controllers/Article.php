@@ -118,7 +118,8 @@ class Article
             'title' => 'Articles List',
             'variables' => [
                 'klas' => '',
-                'action' => $alt ? ARTICLES_RESTORE : ARTICLES_CONFIRM,
+                //'action' => $alt ? ARTICLES_RESTORE : ARTICLES_CONFIRM,
+                'action' => ARTICLES_CONFIRM,
                 'exit' => BADMINTON,
                 'target' => '',
                 'files' => $active,
@@ -128,7 +129,8 @@ class Article
                 'paginate' => $this->paginate,
                 'offset' => $offset ?? null,
                 'increment' => $this->inc,
-                'perform' => $alt ? 'unarchive' : 'delete',
+                'perform' => $alt ? 'destroy' : 'delete',
+                //'perform' => 'delete',
                 'page' => isset($pp[0]) ? $pp[0]['id'] : 0,
                 'select' => ['target' => null, 'identity' => 'pp', 'optval' => 'page', 'options' => $alt ? [] : $pp, 'default' => 'pubDate']
             ]
@@ -161,7 +163,7 @@ class Article
                 'route' => $route,
                 'max' => $max,
                 'upload' => $upload,
-                'required' => 'page',
+                //'required' => 'page',
                 'select' => ['target' => $page, 'identity' => 'page', 'optval' => 'page', 'options' => $pp, 'default' => ''],
                 'submit' => 'submit'
             ]
@@ -183,7 +185,8 @@ class Article
         if ($perform === 'unarchive') {
             return ARTICLES_RESTORE;
         }
-        return $perform === 'archive' ? ARTICLES_RETIRE : ARTICLES_DEL;
+        $action = $perform === 'archive' ? ARTICLES_RETIRE : ARTICLES_DEL;
+        return $perform === 'destroy' ? ARTICLES_DESTROY : $action;
     }
 
     private function domove($id, $title, $pages, $flag = false)
@@ -360,7 +363,10 @@ class Article
         $attr = preg_replace('/\s/', '&nbsp;', $_POST['attr_id']);
         $payload = ['id' => $id, 'title' => $_POST['title'], 'pubDate' => $date, 'page' => $_POST['page'], 'summary' => $_POST['summary'], 'content' => $_POST['content'], 'attr_id' => $attr];
         $pagestatus = $this->pageCheck($payload);
+
+
         $payload['page'] = empty($pagestatus) ? $payload['page'] : $pagestatus[0];
+
         $payload['content'] = $this->cleanRefs($payload['content']);
         $entity = $this->fetch('table', 'title', $payload['title']);
 
@@ -368,7 +374,10 @@ class Article
             $feedback = '/!cannot add article; article title is already in use.';
             reLocate(BADMINTON . $feedback, '../../');
         }
+        //MUST be NULL not JUST empty for MYSQL; FOREIGN CONSTRAINT
+        $payload['page'] = empty($payload['page']) ? NULL : $payload['page'];
         $entity = $this->table->save($payload);
+
         if (empty($pagestatus) && !empty($_POST['position'])) {
             return $this->order($_POST['position']);
         }
@@ -388,10 +397,14 @@ class Article
         } else if (!empty($pagestatus[1])) {
             return $this->domove($payload['id'], $payload['title'], $pagestatus, empty($pagestatus[1]));
         }
+        /*
+        decide we can have a NEW article and NOT assign it to a page
         if (empty($pagestatus) && empty($payload['page'])) {
             $feedback = '!please assign a page to the article';
-            reLocate(BADMINTON  . $feedback, '../../');
+         reLocate(BADMINTON  . $feedback, '../../');
         }
+         */
+        reLocate(BADMINTON, '../../');
     }
 
     //accessed from below EDIT ARTICLE FORM @parm ARTICLE ID
@@ -560,18 +573,24 @@ class Article
         }
     }
 
+    public function destroy()
+    {
+        return $this->delete();
+    }
+
     public function delete()
     {
-
         if (!empty($_POST['cancel'])) {
             reLocate(ARTICLES_LIST, '../../');
         }
         if (isset($_POST['pk'])) {
             $article = $this->fetch('TABLE', 'id', $_POST['pk']);
             if ($article) {
-                $source = $this->table->save($article);
-                $this->unsetPage($article['page']);
-                $source->setName($article['page']);
+                if ($article['page']) {
+                    $source = $this->table->save($article);
+                    $this->unsetPage($article['page']);
+                    $source->setName($article['page']);
+                }
                 $this->table->delete('id', $_POST['pk']);
                 reLocate(ARTICLES_LIST, '../../');
             }
@@ -585,6 +604,7 @@ class Article
     {
         $file = $this->fetch('table', 'id', $id);
         $action = $this->confirmAction($perform);
+
         if (isset($file)) {
             $entity = $this->table->save($this->fetch('TABLE', 'id', $id));
             $assets = $entity->getAssets($file->id, fn() => true);

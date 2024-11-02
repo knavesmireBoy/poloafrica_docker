@@ -62,6 +62,7 @@ define("ARTICLES_ARCHIVED", '/article/archived');
 define("ARTICLES_EDIT", '/article/edit/');
 define("ARTICLES_ADD", '/article/add');
 define("ARTICLES_DEL", '/article/delete/');
+define("ARTICLES_DESTROY", '/article/destroy/');
 define("ARTICLES_RETIRE", '/article/retire/');
 define("ARTICLES_RESTORE", '/article/restore/');
 define("ARTICLES_UNARCHIVE", '/article/unarchive/');
