@@ -14,7 +14,7 @@ $para .= $guide;
 
 $imgroute = preg_match('/slide/', $previewklas);
 
-if($imgId){
+if ($imgId) {
     $imgroute = $imgroute ? GAL_UP . $img->id : GAL_UP . $img->id  . "/$img->id";
 }
 
@@ -51,29 +51,30 @@ if (isset($message)) { ?>
         </fieldset>
         <input type="submit" value="upload">
     </form>
-    <div class="previews">
-        <?php
-        if(isset($img)){
-            $_path = $img->path;
-            //$_path = $img?->path; PHP8
-            $_alt =  $img->alt;
-            $_id = $img->id;
-        }
-       
-        if (!empty($_path) && file_exists(GALLERY . $_path)) { ?>
-            <figure><a href="<?= $imgroute || ''; ?>"><img alt='<?= $_alt ?>' src='/<?= GALLERY . $_path ?>' /></a>
-                <?php if (!empty($info)) { ?>
-                    <figcaption><?= 'ratio: ' . $info['ratio'] . '<br> max: ' . $info['max'] . 'px' ?></figcaption>
-                <?php } ?>
-            </figure>
-        <?php
-        } else { ?>
-            <figure class="notfound">
-                <a href="<?= ASSET_EDIT ?><?= $_id; ?>" title="file not found"></a>
-                <figcaption>FILE NOT FOUND</figcaption>
-            </figure>
-        <?php }
-        ?>
-    </div>
+    <?php
+    if (isset($img)) {
+        //don't show preview if uploading new pic to empty slot
+        $_path = $img->path; //$img?->path; PHP8
+        $_alt =  $img->alt;
+        $_id = $img->id;
+    ?>
+        <div class="previews">
+            <?php
+            if (!empty($_path) && file_exists(GALLERY . $_path)) { ?>
+                <figure><a href="<?= $imgroute || ''; ?>"><img alt='<?= $_alt ?>' src='/<?= GALLERY . $_path ?>' /></a>
+                    <?php if (!empty($info)) { ?>
+                        <figcaption><?= 'ratio: ' . $info['ratio'] . '<br> max: ' . $info['max'] . 'px' ?></figcaption>
+                    <?php } ?>
+                </figure>
+            <?php
+            } else { ?>
+                <figure class="notfound">
+                    <a href="<?= ASSET_EDIT ?><?= $_id; ?>" title="file not found"></a>
+                    <figcaption>FILE NOT FOUND</figcaption>
+                </figure>
+            <?php }
+            ?>
+        </div>
+    <?php } ?>
 </div>
 <p class="replace"><a href="<?= GAL_REVIEW ?>" id="ret" title="back to review">back to review</a></p>

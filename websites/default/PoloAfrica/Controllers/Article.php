@@ -363,18 +363,17 @@ class Article
         $attr = preg_replace('/\s/', '&nbsp;', $_POST['attr_id']);
         $payload = ['id' => $id, 'title' => $_POST['title'], 'pubDate' => $date, 'page' => $_POST['page'], 'summary' => $_POST['summary'], 'content' => $_POST['content'], 'attr_id' => $attr];
         $pagestatus = $this->pageCheck($payload);
-
-
         $payload['page'] = empty($pagestatus) ? $payload['page'] : $pagestatus[0];
-
         $payload['content'] = $this->cleanRefs($payload['content']);
         $entity = $this->fetch('table', 'title', $payload['title']);
-
         if (isset($entity) && empty($id)) {
             $feedback = '/!cannot add article; article title is already in use.';
             reLocate(BADMINTON . $feedback, '../../');
         }
-        //MUST be NULL not JUST empty for MYSQL; FOREIGN CONSTRAINT
+        /*
+        MUST be NULL not JUST empty for MYSQL:
+        Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`polafrica`.`articles`, CONSTRAINT `pager_fk` FOREIGN KEY (`page`) REFERENCES `pages` (`name`) ON DELETE SET NULL ON UPDATE CASCADE)
+        */
         $payload['page'] = empty($payload['page']) ? NULL : $payload['page'];
         $entity = $this->table->save($payload);
 

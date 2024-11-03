@@ -6,9 +6,9 @@ services:
     image: nginx:latest
     ports:
       - '80:80'
-      - '443:443'
+    # - '443:443'
     volumes:
-      - ./websites:/websites
+      - ./websites/default/public:/websites/default/public
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php
