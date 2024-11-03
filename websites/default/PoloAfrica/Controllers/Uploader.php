@@ -129,7 +129,6 @@ abstract class Uploader
         $txt = $_POST['data']['description'] ?? $_POST['data']['alt'] ?? ''; //subclass??
         $fileName = trimToLower($_FILES['uploadfile']['name']);
         $ext = $this->getFileExtension($fileName);
-
         if (strpos($txt, '/')) {
             $f = explode('/', $txt);
             if (!empty($f[1])) {
