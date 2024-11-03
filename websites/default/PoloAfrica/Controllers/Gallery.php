@@ -218,7 +218,7 @@ class Gallery extends Uploader
     public function prepareValues($fileName, $arg = 'upload')
     {
         if ($arg === 'upload' && !empty($fileName)) {
-            $alt = $this->setAlt($_POST['alt']);
+            $alt = $this->setAlt($_POST['data']['alt']);
             $values = ['path' => $fileName, 'alt' => $alt, 'date' => date('Y-m-d')];
             $img = $this->save($values, 'upload');
             if ($img) {

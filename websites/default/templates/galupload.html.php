@@ -45,7 +45,7 @@ if (isset($message)) { ?>
             <label for="box">box</label>
             <input type="number" name="box" id="box" step="1" min="0" max="92" value="<?= $box ?? '' ?>">
             <label for="alt">alt</label>
-            <input id="alt" name="alt" />
+            <input id="alt" name="data[alt]" />
             <?php include '_params.html.php'; ?>
             <input type="hidden" name="action" value="upload" id="upload" />
         </fieldset>
